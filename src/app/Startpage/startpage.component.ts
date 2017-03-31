@@ -3,8 +3,7 @@ import { Http } from "@angular/http";
 // import { Observable } from 'rxjs/Rx';
 // import 'rxjs/add/operator/catch';
 // import 'rxjs/add/operator/map';
-import { userPrivate } from "../userPrivate";
-import { User }         from "../User";
+import { User } from "../User";
 
 
 @Component({
@@ -18,13 +17,11 @@ export class StartpageComponent {
     title = 'This is the title from the StarPage-component';
     // the private user object of the currently user, contains all public and private information    
     // user: userPrivate;
-    user:  User;
+     user =  <User>{};
     apiUrl = 'http://localhost:8080/Kwetter/webresources/rest/getPublicUserInfo/vito@kwetter.com';
 
     constructor(private http: Http) {        
         this.getUserPublic();
-        console.log('user ' + user);
-        console.log('user ' + user.name);
             
         // this.friends = [
         //     new userPublic('Vito', 'Geen bio', 'Roermond', 'www.test.nl', 'geen fotopath'),
@@ -38,7 +35,9 @@ export class StartpageComponent {
         this.http.get('http://localhost:8080/Kwetter/webresources/rest/getPublicUserInfo/vito@kwetter.com')
             .subscribe((resp) => {
                 console.log('during method');
-                this.user = (User) resp.json();
+                console.log('result ' + resp.json());
+                this.user = <User> resp.json();
+                console.log(this.user.location);
             });
              console.log('stop method');
     }
