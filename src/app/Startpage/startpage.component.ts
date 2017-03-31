@@ -17,6 +17,7 @@ export class StartpageComponent {
     // user: userPrivate;
     user = <User>{};
     userFollowing: User[];
+    userFollowedBy: User[];
 
     // CORS meldingen -> resources.add(CORSResponseFilter.class) verdwijnt
 
@@ -25,26 +26,32 @@ export class StartpageComponent {
     constructor(private http: Http) {
         this.getUserPublic();
         this.getThePeopleThatIFollow();
+        this.getThePeopleThatFollowMe();
     };
 
     getUserPublic() {
         this.http.get('http://localhost:8080/Kwetter/webresources/rest/getPublicUserInfo/vito@kwetter.com')
             .subscribe((resp) => {
+                console.log('retrieved user ' + resp.json());
                 this.user = <User>resp.json();
                 console.log(this.user.location);
             });
     }
 
     getThePeopleThatIFollow() {
-        console.log('start method');
         this.http.get('http://localhost:8080/Kwetter/webresources/rest/getThePeopleThatIFollow/vito@kwetter.com')
             .subscribe((resp) => {
-                console.log('during method');
-                console.log('result ' + resp.json());
+                console.log('i follow ' + resp.json());
                 this.userFollowing = resp.json();
-                console.log(this.userFollowing);
             });
-        console.log('stop method');
     }
 
-};
+    getThePeopleThatFollowMe() {
+        this.http.get('http://localhost:8080/Kwetter/webresources/rest/getThePeopleThatFollowMe/vito@kwetter.com')
+            .subscribe((resp) => {
+                console.log('follow me ' + resp.json());
+                this.userFollowedBy = resp.json();
+            });
+    }
+}
+
