@@ -2,6 +2,8 @@ import { Component, Injectable } from '@angular/core';
 import { Http } from "@angular/http";
 import { User } from "../User";
 import { userPrivate } from "../userPrivate";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Posting } from "../Posting";
 
 
 @Component({
@@ -12,12 +14,15 @@ import { userPrivate } from "../userPrivate";
 export class StartpageComponent {
 
     // properties
-    title = 'This is the title from the StarPage-component';
+    //title = 'This is the title from the StarPage-component';
     // the private user object of the currently user, contains all public and private information    
     // user: userPrivate;
     user = <User>{};
     userFollowing: User[];
     userFollowedBy: User[];
+    userPostings: Posting[];
+
+    title = 'Vito';
 
     // CORS meldingen -> resources.add(CORSResponseFilter.class) verdwijnt
 
@@ -27,6 +32,7 @@ export class StartpageComponent {
         this.getUserPublic();
         this.getThePeopleThatIFollow();
         this.getThePeopleThatFollowMe();
+        this.getAllPostings();
     };
 
     getUserPublic() {
@@ -53,5 +59,14 @@ export class StartpageComponent {
                 this.userFollowedBy = resp.json();
             });
     }
+
+    getAllPostings() {
+        this.http.get('http://localhost:8080/Kwetter/webresources/rest/posting/getAllPostings/vito@kwetter.com')
+            .subscribe((resp) => {
+                console.log('follow me ' + resp.json());
+                this.userPostings = resp.json();
+            });
+    }
+
 }
 

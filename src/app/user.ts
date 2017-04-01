@@ -5,8 +5,6 @@ export class User {
         public location: string,
         public website: string,
         public photoPath: string,
-        public peopleThatIFollow: User[],
-        public peopleThatFollowMe: User[],
     ) {
 
     }
