@@ -82,7 +82,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let user of userFollowing ">
-                                <td data-field="image"><img src="{{user.photoPath}}" class="img-rounded" alt="Cinque Terre" style="max-height: 50px; max-width: 50px;"></td>
+                                <td data-field="image"><img src="{{user.photoPath}}" class="img-rounded" alt="no image" style="max-height: 50px; max-width: 50px;"></td>
                                 <td><a href="http://localhost:3000/profilepage?userEmailAddress={{user.emailAddress}}">{{user.name}}</a></td>
                             </tr>
                         </tbody>
@@ -120,7 +120,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let post of userTimelinePostings ">
-                                <td data-field="image"><img src="{{user.photoPath}}" class="img-rounded" alt="Cinque Terre" style="max-height: 50px; max-width: 50px;"></td>
+                                <td data-field="image"><img src="{{user.photoPath}}" class="img-rounded" alt="no image" style="max-height: 50px; max-width: 50px;"></td>
                                 <td>{{post.author}}</td>
                                 <td>{{post.content}}</td>
                             </tr>
@@ -147,7 +147,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let user of userFollowedBy ">
-                                <td data-field="image"><img src="{{user.photoPath}}" class="img-rounded" alt="Cinque Terre" style="max-height: 50px; max-width: 50px;"></td>
+                                <td data-field="image"><img src="{{user.photoPath}}" class="img-rounded" alt="no image" style="max-height: 50px; max-width: 50px;"></td>
                                 <td><a href="http://localhost:3000/profilepage?userEmailAddress={{user.emailAddress}}">{{user.name}}</a></td>
                             </tr>
                         </tbody>

@@ -2,11 +2,10 @@ import { Component, Injectable } from '@angular/core';
 import { Http } from "@angular/http";
 import 'rxjs/add/operator/map';
 import { User } from "../Domain/User/User";
-import { userPrivate } from "../Domain/User/userPrivate";
+import { UserPrivate } from "../Domain/User/userPrivate";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Posting } from "../Domain/Posting/Posting";
 import { Router, ActivatedRoute, Params } from '@angular/router';
-
 
 @Component({
     selector: 'my-app',
@@ -36,15 +35,6 @@ export class ProfilepageComponent {
         this.getAllPostings();
     }
 
-    // used to revrieve the userEmailAddress from the url
-    // ngOnInit() {
-    //     this.route.params.forEach((params: Params) => {
-    //         this.userEmailAddress = params['userEmailAddress'];
-    //     });
-    //     console.log(this.userEmailAddress); // you should get your parameters here
-    //     this.getUserPublic();
-    // }
-
     // after retrieving the userEmailAddress it's time to retrieve the user data and view on the profilepage
     getUserPublic() {
         this.http.get('http://localhost:8080/Kwetter/webresources/rest/getPublicUserInfo/' + this.userEmailAddress)
@@ -65,15 +55,15 @@ export class ProfilepageComponent {
     getThePeopleThatFollowMe() {
         this.http.get('http://localhost:8080/Kwetter/webresources/rest/getThePeopleThatFollowMe/' + this.userEmailAddress)
             .subscribe((resp) => {
-                console.log('getThePeopleThatFollowMe me ' + resp.json());
+                console.log('getThePeopleThatFollowMe' + resp.json());
                 this.userFollowedBy = resp.json();
             });
     }
 
     getAllPostings() {
-        this.http.get('http://localhost:8080/Kwetter/webresources/rest/getAllPostings/vito@kwetter.com/')
+        this.http.get('http://localhost:8080/Kwetter/webresources/rest/getAllPostings/'+ this.userEmailAddress)
             .subscribe((resp) => {
-                console.log('getAllPostings me ' + resp.json());
+                console.log('getAllPostings' + resp.json());
                 this.userPostings = resp.json();
             });
     }

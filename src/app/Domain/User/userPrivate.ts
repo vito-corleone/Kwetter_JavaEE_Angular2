@@ -1,19 +1,15 @@
-import { User } from "./User";
-
-export class userPrivate {
+export class UserPrivate {
     constructor(
         public id: string,
-        public name: string,
-        public bio: string,
-        public location: string,
-        public website: string,
-        public photopath: string,
-        public emailAddress: string,
-        public password: string,
         public userRole: string,
-        public peopleThatIFollow: User [],
-        public peopleThatFollowMe: User []
+        public bio: string,
+        public website: string,
+        public location: string,
+        public name: string,       
+        public photopath: string,
+        public emailAddress: string        
     ) {
 
     }    
 }
+

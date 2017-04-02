@@ -2,7 +2,7 @@ import { Component, Injectable } from '@angular/core';
 import { Http } from "@angular/http";
 import 'rxjs/add/operator/map';
 import { User } from "../Domain/User/User";
-import { userPrivate } from "../Domain/User/userPrivate";
+import { UserPrivate } from "../Domain/User/userPrivate";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Posting } from "../Domain/Posting/Posting";
 
@@ -24,10 +24,7 @@ export class StartpageComponent {
     // the timeline postings, inlude postings of the user and the people the user follows
     userTimelinePostings: Posting[];
 
-
-    userPostings: Posting[];
-
-
+    
     userFriend = <User>{};
     userRecentPost = <Posting>{};
 
@@ -82,13 +79,6 @@ export class StartpageComponent {
             });
     }
 
-    // getAllPostings() {
-    //     this.http.get('http://localhost:8080/Kwetter/webresources/rest/getAllPostings/vito@kwetter.com/')
-    //         .subscribe((resp) => {
-    //             console.log('getAllPostings ' + resp.json());
-    //             this.userPostings = resp.json();
-    //         });
-    // }
 
 
 
@@ -108,7 +98,6 @@ export class StartpageComponent {
                 this.userRecentPost = resp.json();
             });
         this.postingContent = '';
-        this.getAllPostings();
     }
 
     // Fire a search action based on provided keyword
