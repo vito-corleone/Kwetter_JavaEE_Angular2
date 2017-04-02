@@ -14,14 +14,20 @@ import { Posting } from "../Domain/Posting/Posting";
 @Injectable()
 export class StartpageComponent {
 
-    // properties
-    //title = 'This is the title from the StarPage-component';
-    // the private user object of the currently user, contains all public and private information    
-    // user: userPrivate;
+    // the user that is authenticated
     user = <User>{};
+
+    // the list of the people that the user is following
     userFollowing: User[];
+    // a list of users who follow this user
     userFollowedBy: User[];
+    // the timeline postings, inlude postings of the user and the people the user follows
+    userTimelinePostings: Posting[];
+
+
     userPostings: Posting[];
+
+
     userFriend = <User>{};
     userRecentPost = <Posting>{};
 
@@ -35,17 +41,13 @@ export class StartpageComponent {
     searchResultPostings = <Posting>{};
 
 
-    title = 'Vito';
-
     // CORS meldingen -> resources.add(CORSResponseFilter.class) verdwijnt
-
-    apiUrl = 'http://localhost:8080/Kwetter/webresources/rest/getPublicUserInfo/vito@kwetter.com';
 
     constructor(private http: Http) {
         this.getUserPublic();
         this.getThePeopleThatIFollow();
         this.getThePeopleThatFollowMe();
-        this.getAllPostings();
+        this.getTimelinePostings();
     };
 
     getUserPublic() {
@@ -56,8 +58,16 @@ export class StartpageComponent {
             });
     }
 
+    // getUpdateUserInfo() {
+    //     this.http.get('http://localhost:8080/Kwetter/webresources/rest/getUpdateUserInfo/vito@kwetter.com/' + this.name + '/' + this.bio + '/' + this.location + '/' + this.website + '/')
+    //         .subscribe((resp) => {
+    //             console.log('getUpdateUserInfo ' + resp.json());
+    //             this.user = <User>resp.json();
+    //         });
+    // }
+
     getThePeopleThatIFollow() {
-        this.http.get('http://localhost:8080/Kwetter/webresources/rest/getThePeopleThatIFollow/vito@kwetter.com')
+        this.http.get('http://localhost:8080/Kwetter/webresources/rest/getThePeopleThatIFollow/vito@kwetter.com/')
             .subscribe((resp) => {
                 console.log('getThePeopleThatIFollow ' + resp.json());
                 this.userFollowing = resp.json();
@@ -65,18 +75,28 @@ export class StartpageComponent {
     }
 
     getThePeopleThatFollowMe() {
-        this.http.get('http://localhost:8080/Kwetter/webresources/rest/getThePeopleThatFollowMe/vito@kwetter.com')
+        this.http.get('http://localhost:8080/Kwetter/webresources/rest/getThePeopleThatFollowMe/vito@kwetter.com/')
             .subscribe((resp) => {
-                console.log('getThePeopleThatFollowMe me ' + resp.json());
+                console.log('getThePeopleThatFollowMe ' + resp.json());
                 this.userFollowedBy = resp.json();
             });
     }
 
-    getAllPostings() {
-        this.http.get('http://localhost:8080/Kwetter/webresources/rest/getAllPostings/vito@kwetter.com')
+    // getAllPostings() {
+    //     this.http.get('http://localhost:8080/Kwetter/webresources/rest/getAllPostings/vito@kwetter.com/')
+    //         .subscribe((resp) => {
+    //             console.log('getAllPostings ' + resp.json());
+    //             this.userPostings = resp.json();
+    //         });
+    // }
+
+
+
+    getTimelinePostings() {
+        this.http.get('http://localhost:8080/Kwetter/webresources/rest/getTimelinePostings/vito@kwetter.com/')
             .subscribe((resp) => {
-                console.log('getAllPostings me ' + resp.json());
-                this.userPostings = resp.json();
+                console.log('getTimelinePostings ' + resp.json());
+                this.userTimelinePostings = resp.json();
             });
     }
 
@@ -95,7 +115,7 @@ export class StartpageComponent {
     getSearchResult() {
         this.http.get('http://localhost:8080/Kwetter/webresources/rest/getSearchResult/' + this.searchKeyword)
             .subscribe((resp) => {
-                console.log('getSearchResult me ' + resp.json());
+                console.log('getSearchResult' + resp.json());
                 this.searchResultPostings = resp.json();
             });
         this.searchKeyword = '';
@@ -109,13 +129,13 @@ export class StartpageComponent {
     //         .subscribe((result) => this.userPostings = result);
     // }
 
-    onSubmit() {
-        this.http.get('http://localhost:8080/Kwetter/webresources/rest/getPublicUserInfo/user1@kwetter.com')
-            .subscribe((resp) => {
-                this.userFriend = <User>resp.json();
-                console.log(this.userFriend.location);
-            });
-    }
+    // onSubmit() {
+    //     this.http.get('http://localhost:8080/Kwetter/webresources/rest/getPublicUserInfo/user1@kwetter.com')
+    //         .subscribe((resp) => {
+    //             this.userFriend = <User>resp.json();
+    //             console.log(this.userFriend.location);
+    //         });
+    // }
 
 }
 

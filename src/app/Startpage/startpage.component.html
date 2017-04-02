@@ -6,20 +6,23 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-group">
-                        <form class="form-horizontal">
-                            <label class="control-label" for="focusedInput">Name</label>
-                            <input class="form-control" id="focusedInput" type="text" value={{user.name}}>
-                            <label class="control-label" for="focusedInput">Bio</label>
-                            <input class="form-control" id="focusedInput" type="text" value={{user.bio}}>
-                            <label class="control-label" for="focusedInput">Location</label>
-                            <input class="form-control" id="focusedInput" type="text" value={{user.location}}>
-                            <label class="control-label" for="focusedInput">Website</label>
-                            <input class="form-control" id="focusedInput" type="text" value={{user.website}}>
-                            <div class="col-lg-10 col-lg-offset-2" style="padding-top: 10px;">
-                                <button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
-                            </div>
-                        </form>
+                    <label class="control-label" for="focusedInput">Name</label>
+                    <!--<input class="form-control" id="focusedInput" type="text" value={{user.name}}>-->
+                    <input class="form-control" id="focusedInput" type="text" value={{user.name}} [(ngModel)]="name">
+                    <label class="control-label" for="focusedInput">Bio</label>
+                    <!--<input class="form-control" id="focusedInput" type="text" value={{user.bio}}>-->
+                    <input class="form-control" id="focusedInput" type="text" value={{user.bio}} [(ngModel)]="bio">
+
+                    <label class="control-label" for="focusedInput">Location</label>
+                    <!--<input class="form-control" id="focusedInput" type="text" value={{user.location}}>-->
+                    <input class="form-control" id="focusedInput" type="text" value={{user.location}} [(ngModel)]="location">
+
+                    <label class="control-label" for="focusedInput">Website</label>
+                    <!--<input class="form-control" id="focusedInput" type="text" value={{user.website}}>-->
+                    <input class="form-control" id="focusedInput" type="text" value={{user.website}} [(ngModel)]="website">
+
+                    <div class="col-lg-10 col-lg-offset-2" style="padding-top: 10px;">
+                        <button type="submit" (click)="getUpdateUserInfo()" class="btn btn-primary" style="float: right;">Submit</button>
                     </div>
                 </div>
             </div>
@@ -80,7 +83,7 @@
                         <tbody>
                             <tr *ngFor="let user of userFollowing ">
                                 <td data-field="image"><img src="{{user.photoPath}}" class="img-rounded" alt="Cinque Terre" style="max-height: 50px; max-width: 50px;"></td>
-                                <td>{{user.name}}</td>
+                                <td><a href="http://localhost:3000/profilepage?userEmailAddress={{user.emailAddress}}">{{user.name}}</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -116,7 +119,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let post of userPostings ">
+                            <tr *ngFor="let post of userTimelinePostings ">
                                 <td data-field="image"><img src="{{user.photoPath}}" class="img-rounded" alt="Cinque Terre" style="max-height: 50px; max-width: 50px;"></td>
                                 <td>{{post.author}}</td>
                                 <td>{{post.content}}</td>
@@ -145,7 +148,7 @@
                         <tbody>
                             <tr *ngFor="let user of userFollowedBy ">
                                 <td data-field="image"><img src="{{user.photoPath}}" class="img-rounded" alt="Cinque Terre" style="max-height: 50px; max-width: 50px;"></td>
-                                <td>{{user.name}}</td>
+                                <td><a href="http://localhost:3000/profilepage?userEmailAddress={{user.emailAddress}}">{{user.name}}</a></td>
                             </tr>
                         </tbody>
                     </table>
