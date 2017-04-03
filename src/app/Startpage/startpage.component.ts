@@ -17,12 +17,9 @@ import { Router } from "@angular/router";
 export class StartpageComponent {
     updatePeriodTypes: any;
     // the user that is authenticated
-
     user = <User>{};
-
     @Input()
     userAuthenticated: UserPrivate;
-
     userEmail: string;
     // the list of the people that the user is following
     userFollowing: User[];
@@ -34,7 +31,8 @@ export class StartpageComponent {
     userRecentPost = <Posting>{};
     // List that contains all the postings that contain the searchKeyword
     searchResultPostings = <Posting>{};
-
+    // search result switch
+    search:boolean;
 
     constructor(private http: Http, private _cdRef: ChangeDetectorRef,private router: Router) {
         this.userEmail = localStorage.getItem("user");
@@ -46,17 +44,6 @@ export class StartpageComponent {
         this.getThePeopleThatFollowMe();
         this.getTimelinePostings();
     };
-
-    // ngOnInit() {
-    //     if (this.userAuthenticated != null) {
-    //         this.userEmail = localStorage.getItem("user");
-    //         console.log('localStorage ' + localStorage.getItem("user"));
-    //         this.getUserPublic();
-    //         this.getThePeopleThatIFollow();
-    //         this.getThePeopleThatFollowMe();
-    //         this.getTimelinePostings();
-    //     }
-    // }
 
     getUserPublic() {
         this.http.get('http://localhost:8080/Kwetter/webresources/rest/getPublicUserInfo/' + this.userEmail)
@@ -97,6 +84,7 @@ export class StartpageComponent {
                 console.log('getTimelinePostings ' + resp.json());
                 this.userTimelinePostings = resp.json();
                 // this._cdRef.markForCheck();
+
             });
     }
 
@@ -106,6 +94,7 @@ export class StartpageComponent {
                 console.log('createPost ' + resp.json());
                 this.userRecentPost = resp.json();
                 this.getTimelinePostings();
+                this.search = false;
                 this._cdRef.markForCheck();
             });
     }
@@ -116,6 +105,7 @@ export class StartpageComponent {
             .subscribe((resp) => {
                 console.log('getSearchResult' + resp.json());
                 this.searchResultPostings = resp.json();
+                this.search = true;
                 this._cdRef.markForCheck();
             });
     }

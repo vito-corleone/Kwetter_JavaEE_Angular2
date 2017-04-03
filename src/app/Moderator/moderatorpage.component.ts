@@ -1,4 +1,4 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, ChangeDetectorRef } from '@angular/core';
 import { Http } from "@angular/http";
 import 'rxjs/add/operator/map';
 import { UserPrivate } from "../Domain/User/userPrivate";
@@ -26,10 +26,11 @@ export class ModeratorpageComponent {
     // all the users 
     allUsers: User[];
 
-    constructor(private http: Http, private router: Router) {
+    constructor(private http: Http, private router: Router,private _cdRef: ChangeDetectorRef) {
         if(localStorage.getItem("userRole") != 'Moderator'){
             this.router.navigate(['/loginpage']);
         }
+
     };
 
     // method to find a user, for now based only on emailaddress
@@ -62,7 +63,7 @@ export class ModeratorpageComponent {
         this.http.get('http://localhost:8080/Kwetter/webresources/rest/removePost/' + postid)
             .subscribe((resp) => {
                 console.log('removePost ' + resp.json());
-                this.result = resp.json();
+                this.result = resp.json();                
             });
 
     }
@@ -73,7 +74,8 @@ export class ModeratorpageComponent {
             .subscribe((resp) => {
                 console.log('removeUser ' + resp.json());
                 this.result = resp.json();
-                this.getAllKweets();
+                this.getAllUsers();
+                this._cdRef.markForCheck();
             });
     }
 
