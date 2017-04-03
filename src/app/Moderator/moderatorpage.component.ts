@@ -5,6 +5,7 @@ import { UserPrivate } from "../Domain/User/userPrivate";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Posting } from "../Domain/Posting/Posting";
 import { User } from "../Domain/User/User";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'my-app',
@@ -25,8 +26,10 @@ export class ModeratorpageComponent {
     // all the users 
     allUsers: User[];
 
-    constructor(private http: Http) {
-
+    constructor(private http: Http, private router: Router) {
+        if(localStorage.getItem("userRole") != 'Moderator'){
+            this.router.navigate(['/loginpage']);
+        }
     };
 
     // method to find a user, for now based only on emailaddress
@@ -64,7 +67,7 @@ export class ModeratorpageComponent {
 
     }
 
-      removeUser(userId: string) {
+    removeUser(userId: string) {
         console.log(userId);
         this.http.get('http://localhost:8080/Kwetter/webresources/rest/removeUser/' + userId)
             .subscribe((resp) => {

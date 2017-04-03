@@ -1,4 +1,4 @@
-import { Component, Injectable, ChangeDetectorRef } from '@angular/core';
+import { Component, Injectable, ChangeDetectorRef, Input, Attribute } from '@angular/core';
 import { Http } from "@angular/http";
 import 'rxjs/add/operator/map';
 import { User } from "../Domain/User/User";
@@ -6,6 +6,7 @@ import { UserPrivate } from "../Domain/User/userPrivate";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Posting } from "../Domain/Posting/Posting";
 import { Subject } from "rxjs/Subject";
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -14,8 +15,15 @@ import { Subject } from "rxjs/Subject";
 })
 @Injectable()
 export class StartpageComponent {
+    updatePeriodTypes: any;
     // the user that is authenticated
+
     user = <User>{};
+
+    @Input()
+    userAuthenticated: UserPrivate;
+
+    userEmail: string;
     // the list of the people that the user is following
     userFollowing: User[];
     // a list of users who follow this user
@@ -27,21 +35,32 @@ export class StartpageComponent {
     // List that contains all the postings that contain the searchKeyword
     searchResultPostings = <Posting>{};
 
-    search: boolean = false;
 
-    private timeLine: Subject<any> = new Subject<any>();
-    private searching: Subject<boolean> = new Subject<boolean>();
-
-
-    constructor(private http: Http, private _cdRef: ChangeDetectorRef) {
+    constructor(private http: Http, private _cdRef: ChangeDetectorRef,private router: Router) {
+        this.userEmail = localStorage.getItem("user");
+        if(localStorage.getItem("userRole") != 'User'){
+            this.router.navigate(['/loginpage']);
+        }
         this.getUserPublic();
         this.getThePeopleThatIFollow();
         this.getThePeopleThatFollowMe();
         this.getTimelinePostings();
     };
 
+    // ngOnInit() {
+    //     if (this.userAuthenticated != null) {
+    //         this.userEmail = localStorage.getItem("user");
+    //         console.log('localStorage ' + localStorage.getItem("user"));
+    //         this.getUserPublic();
+    //         this.getThePeopleThatIFollow();
+    //         this.getThePeopleThatFollowMe();
+    //         this.getTimelinePostings();
+    //     }
+    // }
+
     getUserPublic() {
-        this.http.get('http://localhost:8080/Kwetter/webresources/rest/getPublicUserInfo/vito@kwetter.com')
+        this.http.get('http://localhost:8080/Kwetter/webresources/rest/getPublicUserInfo/' + this.userEmail)
+            // this.http.get('http://localhost:8080/Kwetter/webresources/rest/getPublicUserInfo/vito@kwetter.com')
             .subscribe((resp) => {
                 console.log('getUserPublic ' + resp.json());
                 this.user = <User>resp.json();
@@ -81,48 +100,15 @@ export class StartpageComponent {
             });
     }
 
-
-    // getTimelinePostings() {
-    //     this.searching.next(true);
-    //     this.http.get('http://localhost:8080/Kwetter/webresources/rest/getTimelinePostings/vito@kwetter.com/')
-    //         .subscribe(response => {
-    //             this.timeLine.next(response.json());
-    //             console.log('getTimelinePostings' + response.json());
-    //             this.searching.next(false);
-    //         });
-    // }
-
     createPost(newKweet: string) {
         this.http.get('http://localhost:8080/Kwetter/webresources/rest/user/posting/createPosting/' + this.user.id + '/' + newKweet)
             .subscribe((resp) => {
                 console.log('createPost ' + resp.json());
                 this.userRecentPost = resp.json();
                 this.getTimelinePostings();
-                this.search = false;
                 this._cdRef.markForCheck();
             });
     }
-
-    //     createPost(newKweet: string) {
-    //     this.http.get('http://localhost:8080/Kwetter/webresources/rest/user/posting/createPosting/' + this.user.id + '/' + newKweet)
-    //         .subscribe((resp) => {
-    //             console.log('createPost ' + resp.json());
-    //             this.userRecentPost = resp.json();
-    //             this.getTimelinePostings();
-    //             this._cdRef.markForCheck();
-    //         });
-    // }
-
-    // create new Kweet
-    // createPost(newKweet: string) {
-    //     this.searching.next(true);
-    //     this.http.get('http://localhost:8080/Kwetter/webresources/rest/user/posting/createPosting/' + this.user.id + '/' + newKweet)
-    //         .subscribe(response => {
-    //             this.timeLine.next(response.json());
-    //             this.searching.next(false);
-    //         });
-
-
 
     // Fire a search action based on provided keyword
     getSearchResult(searchKeyword: string) {
@@ -130,7 +116,6 @@ export class StartpageComponent {
             .subscribe((resp) => {
                 console.log('getSearchResult' + resp.json());
                 this.searchResultPostings = resp.json();
-                this.search = true;
                 this._cdRef.markForCheck();
             });
     }
