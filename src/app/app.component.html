@@ -6,7 +6,7 @@
           <li><a routerLink="/loginpage" routerLinkActive="active">Login</a></li>
           <li><a routerLink="/profilepage" routerLinkActive="active">Profilepage</a></li>
           <li><a routerLink="/startpage" routerLinkActive="active">Startpage</a></li>
-          <li><a routerLink="/moderatorpage" routerLinkActive="active">Moderator</a></li>          
+          <li><a routerLink="/moderatorpage" routerLinkActive="active">Moderator</a></li>
         </ul>
       </div>
     </div>
@@ -18,3 +18,4 @@
     <router-outlet></router-outlet>
   </div>
 </div>
+<marquee behavior="scroll" scrollamount="3" direction="left" onmouseover="this.stop();" onmouseout="this.start();">{{jmsMessages}}</marquee>

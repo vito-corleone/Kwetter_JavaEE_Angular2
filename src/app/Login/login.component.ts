@@ -20,9 +20,6 @@ import { StartpageComponent } from '../Startpage/startpage.component'
 export class LoginComponent {
 
     isLoggedIn: boolean = false;
-    // store the URL so we can redirect after logging in
-    public redirectUrlUser: 'localhost:3000/startpage';
-    public redirectUrlModerator: 'localhost:3000/moderatorpage';
     startpage = <StartpageComponent>{};
 
     // startpage: 
