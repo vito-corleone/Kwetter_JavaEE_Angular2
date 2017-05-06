@@ -7,6 +7,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Posting } from "../Domain/Posting/Posting";
 import { Subject } from "rxjs/Subject";
 import { Router } from "@angular/router";
+import { Message } from "../Domain/Message/Message";
 
 
 @Component({
@@ -18,6 +19,8 @@ export class StartpageComponent {
     updatePeriodTypes: any;
     // the user that is authenticated
     user = <User>{};
+    // websocket var
+    websocket: WebSocket;
     @Input()
     userAuthenticated: UserPrivate;
     userEmail: string;
@@ -32,11 +35,14 @@ export class StartpageComponent {
     // List that contains all the postings that contain the searchKeyword
     searchResultPostings = <Posting>{};
     // search result switch
-    search:boolean;
+    search: boolean;
 
-    constructor(private http: Http, private _cdRef: ChangeDetectorRef,private router: Router) {
+
+
+
+    constructor(private http: Http, private _cdRef: ChangeDetectorRef, private router: Router) {
         this.userEmail = localStorage.getItem("user");
-        if(localStorage.getItem("userRole") != 'User'){
+        if (localStorage.getItem("userRole") != 'User') {
             this.router.navigate(['/loginpage']);
         }
         this.getUserPublic();
@@ -109,5 +115,47 @@ export class StartpageComponent {
                 this._cdRef.markForCheck();
             });
     }
+
+    connect() {
+        //WebSocket placeholder
+        this.websocket = new WebSocket('ws://localhost:8080/Kwetter/endpoint');
+        //atach event listeneres
+        this.websocket.onopen = function () {
+            console.log('blue', 'CONNECTED');
+            //doSend('WebSockets rock');
+        };
+        this.websocket.onclose = function () {
+            console.log('blue', 'DISCONNECTED');
+        };
+        this.websocket.onmessage = function (evt) {
+            //convert json to javascript object
+            console.log(evt.data);
+            var message = JSON.parse(evt.data);
+            //write message.text to screen
+            console.log('green', 'I: ' + message.text);
+        };
+        this.websocket.onerror = function (event) {
+            console.log('red', 'ERROR: ' + event);
+        };
+    }
+
+    sendMessage(text: string) {
+        // naam Vito nog veranderen
+        let messageObject = new Message(text);
+        let message = JSON.stringify(messageObject);
+        console.log(message);
+        this.websocket.send(message);
+    }
+
+    // onLoad() {
+    //     this.connect();
+    // }
+
+    // doSend(text: string) {
+    //     console.log('black', 'O: ' + text);
+    //     var message = JSON.stringify({ 'text': text });
+    //     this.websocket.send(message);
+    // }
+
 }
 

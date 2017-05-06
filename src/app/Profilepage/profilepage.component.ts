@@ -7,6 +7,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Posting } from "../Domain/Posting/Posting";
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
+
 @Component({
     selector: 'my-app',
     templateUrl: './profilepage.component.html',
@@ -67,5 +68,12 @@ export class ProfilepageComponent {
                 this.userPostings = resp.json();
             });
     }
+
+    // connect(){
+    //     var ws = new $WebSocket("ws://localhost:8080/Kwetter/endpoint");
+    // }
+    
+
+    
 
 }
