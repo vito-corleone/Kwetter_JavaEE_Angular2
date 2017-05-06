@@ -114,31 +114,40 @@ export class StartpageComponent {
             });
     }
 
-    addNewPosting(posting: Posting){
+    addNewPosting(posting: Posting) {
         console.log('before ' + this.userTimelinePostings);
         this._cdRef.markForCheck();
-        this.userTimelinePostings.unshift(posting);        
-        console.log('after '+ this.userTimelinePostings);        
+        this.userTimelinePostings.unshift(posting);
+        console.log('after ' + this.userTimelinePostings);
     }
 
-    
+
+
     connect() {
-        this.websocket = new WebSocket('ws://localhost:8080/Kwetter/endpoint/' + this.user.emailAddress);   
+        this.websocket = new WebSocket('ws://localhost:8080/Kwetter/endpoint/');
         var _this = this;
         this.websocket.onopen = function () {
             console.log('blue', 'CONNECTED');
+            _this.initUserWSSession();
         };
         this.websocket.onclose = function () {
             console.log('blue', 'DISCONNECTED');
         };
         this.websocket.onmessage = function (evt) {
-             var message = JSON.parse(evt.data);               
-             console.log(message); 
-             _this.addNewPosting(message);
+            var message = JSON.parse(evt.data);
+            console.log(message);
+            _this.addNewPosting(message);
         };
         this.websocket.onerror = function (event) {
             console.log('red', 'ERROR: ' + event);
-        };        
+        };
+    }
+
+    initUserWSSession() {
+        let messageObject = new Message(this.user.emailAddress, 'SessionInit');
+        let message = JSON.stringify(messageObject);
+        console.log(message);
+        this.websocket.send(message);
     }
 
     sendMessage(text: string) {
