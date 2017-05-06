@@ -36,6 +36,8 @@ export class StartpageComponent {
     searchResultPostings = <Posting>{};
     // search result switch
     search: boolean;
+    // received posting
+    receivedPosting: Posting;
 
 
 
@@ -116,46 +118,53 @@ export class StartpageComponent {
             });
     }
 
+    addNewPosting(posting: Posting){
+        console.log(posting);
+        this.userTimelinePostings.push(posting);
+        this._cdRef.markForCheck();
+    }
+
+    onMessage(){
+        var message;
+        this.websocket.onmessage = function (evt){
+            message = JSON.parse(evt.data);  
+            console.log(message);        
+        }
+        this.addNewPosting(message);
+    
+    }
+
     connect() {
         //WebSocket placeholder
-        this.websocket = new WebSocket('ws://localhost:8080/Kwetter/endpoint');
+        this.websocket = new WebSocket('ws://localhost:8080/Kwetter/endpoint/' + this.user.emailAddress);        
         //atach event listeneres
         this.websocket.onopen = function () {
             console.log('blue', 'CONNECTED');
-            //doSend('WebSockets rock');
         };
         this.websocket.onclose = function () {
             console.log('blue', 'DISCONNECTED');
         };
         this.websocket.onmessage = function (evt) {
             //convert json to javascript object
-            console.log(evt.data);
-            var message = JSON.parse(evt.data);
+             //console.log(evt.data);
+             var message = JSON.parse(evt.data);  
+             console.log(message); 
             //write message.text to screen
-            console.log('green', 'I: ' + message.text);
+            // console.log('green', 'I: ' + message.text);
         };
         this.websocket.onerror = function (event) {
             console.log('red', 'ERROR: ' + event);
         };
+        
     }
 
+
+
     sendMessage(text: string) {
-        // naam Vito nog veranderen
-        let messageObject = new Message(text);
+        let messageObject = new Message(this.user.emailAddress, text);
         let message = JSON.stringify(messageObject);
         console.log(message);
         this.websocket.send(message);
     }
-
-    // onLoad() {
-    //     this.connect();
-    // }
-
-    // doSend(text: string) {
-    //     console.log('black', 'O: ' + text);
-    //     var message = JSON.stringify({ 'text': text });
-    //     this.websocket.send(message);
-    // }
-
 }
 
