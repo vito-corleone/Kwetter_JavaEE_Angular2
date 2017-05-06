@@ -39,9 +39,6 @@ export class StartpageComponent {
     // received posting
     receivedPosting: Posting;
 
-
-
-
     constructor(private http: Http, private _cdRef: ChangeDetectorRef, private router: Router) {
         this.userEmail = localStorage.getItem("user");
         if (localStorage.getItem("userRole") != 'User') {
@@ -92,7 +89,6 @@ export class StartpageComponent {
                 console.log('getTimelinePostings ' + resp.json());
                 this.userTimelinePostings = resp.json();
                 // this._cdRef.markForCheck();
-
             });
     }
 
@@ -119,25 +115,16 @@ export class StartpageComponent {
     }
 
     addNewPosting(posting: Posting){
-        console.log(posting);
-        this.userTimelinePostings.push(posting);
+        console.log('before ' + this.userTimelinePostings);
         this._cdRef.markForCheck();
+        this.userTimelinePostings.unshift(posting);        
+        console.log('after '+ this.userTimelinePostings);        
     }
 
-    onMessage(){
-        var message;
-        this.websocket.onmessage = function (evt){
-            message = JSON.parse(evt.data);  
-            console.log(message);        
-        }
-        this.addNewPosting(message);
     
-    }
-
     connect() {
-        //WebSocket placeholder
-        this.websocket = new WebSocket('ws://localhost:8080/Kwetter/endpoint/' + this.user.emailAddress);        
-        //atach event listeneres
+        this.websocket = new WebSocket('ws://localhost:8080/Kwetter/endpoint/' + this.user.emailAddress);   
+        var _this = this;
         this.websocket.onopen = function () {
             console.log('blue', 'CONNECTED');
         };
@@ -145,20 +132,14 @@ export class StartpageComponent {
             console.log('blue', 'DISCONNECTED');
         };
         this.websocket.onmessage = function (evt) {
-            //convert json to javascript object
-             //console.log(evt.data);
-             var message = JSON.parse(evt.data);  
+             var message = JSON.parse(evt.data);               
              console.log(message); 
-            //write message.text to screen
-            // console.log('green', 'I: ' + message.text);
+             _this.addNewPosting(message);
         };
         this.websocket.onerror = function (event) {
             console.log('red', 'ERROR: ' + event);
-        };
-        
+        };        
     }
-
-
 
     sendMessage(text: string) {
         let messageObject = new Message(this.user.emailAddress, text);
