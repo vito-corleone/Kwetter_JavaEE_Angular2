@@ -1,5 +1,5 @@
 import { Component, Injectable, ChangeDetectorRef } from '@angular/core';
-import { Http } from "@angular/http";
+import { Http, Headers, RequestOptions } from "@angular/http";
 import 'rxjs/add/operator/map';
 import { UserPrivate } from "../Domain/User/userPrivate";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
@@ -25,13 +25,45 @@ export class ModeratorpageComponent {
     allPostings: Posting[];
     // all the users 
     allUsers: User[];
+    // getUserwithResources
+    user = <UserPrivate>{};
+    userPOST: string;
+    userDELETE: string;
 
-    constructor(private http: Http, private router: Router,private _cdRef: ChangeDetectorRef) {
-        if(localStorage.getItem("userRole") != 'Moderator'){
+    constructor(private http: Http, private router: Router, private _cdRef: ChangeDetectorRef) {
+        if (localStorage.getItem("userRole") != 'Moderator') {
             this.router.navigate(['/loginpage']);
         }
 
     };
+
+    getUser() {
+        this.http.get('http://localhost:8080/Kwetter/webresources/rest/moderator/user/' + this.searchUserKeyword)
+            .subscribe((resp) => {
+                console.log('findUser ' + resp.json());
+                this.user = <UserPrivate>resp.json();
+                let index = this.user.resources[1].indexOf('>');
+                this.userPOST = this.user.resources[1].substring(1, index);
+                this.userDELETE = this.user.resources[2]
+                console.log(this.userPOST);
+                console.log(this.userDELETE);
+            });
+    }
+
+    userEdit(name: string, bio: string, location: string, website: string, userrole: string) {
+        let params = 'id='+this.user.id+'&emailAddress='+this.user.emailAddress+'&name='+name+'&bio='+bio+'&location='+location+'&website='+website+'&userrole='+userrole;
+        // let headers = new Headers({ 'Content-Type': 'application/json' });
+        // let options = new RequestOptions({ headers: headers });
+        //this.http.post(this.userPOST, JSON.stringify({ 'id': this.user.id, 'emailAddress': this.user.emailAddress, 'name': name, 'bio': bio, 'location': location, 'website': website, 'userrole': userrole }), options).subscribe((resp) => {
+        // this.http.post(this.userPOST, params).subscribe((resp) => {
+        //     this.user = <UserPrivate>resp.json();
+        // });
+    }
+
+    userDelete() {
+        this.http.delete(this.userDELETE);
+    }
+
 
     // method to find a user, for now based only on emailaddress
     findUser() {
@@ -63,7 +95,7 @@ export class ModeratorpageComponent {
         this.http.get('http://localhost:8080/Kwetter/webresources/rest/removePost/' + postid)
             .subscribe((resp) => {
                 console.log('removePost ' + resp.json());
-                this.result = resp.json();                
+                this.result = resp.json();
             });
 
     }

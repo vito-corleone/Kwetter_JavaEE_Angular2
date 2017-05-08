@@ -7,16 +7,16 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <input class="form-control" id="focusedInput" type="text" placeholder="Emailaddress" [(ngModel)]="searchUserKeyword">
+                        <input class="form-control" id="focusedInput" type="text" placeholder="id (Hateos)" [(ngModel)]="searchUserKeyword">
                     </div>
                     <div class="col-md-3">
-                        <button type="button" (click)="findUser()" class="btn btn-primary">Search</button>
+                        <button type="button" (click)="getUser()" class="btn btn-primary">Search</button>
                     </div>
                     <div class="col-md-3">
 
                     </div>
                     <div class="col-md-3">
-                        <button type="button" (click)="saveUser(inputUserName.value,inputUserBio.value,inputUserLocation.value,inputUserWebsite.value,inputUserRole.value)"
+                        <button type="button" (click)="userEdit(inputUserName.value,inputUserBio.value,inputUserLocation.value,inputUserWebsite.value,inputUserRole.value)"
                             class="btn btn-success" style="float:right;">Save new info</button>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                         <hr>
                         <hr>
                         <hr>
-                        <img src="{{userPrivate.photoPath}}" class="img-rounded" alt="no image" style="max-width:100px; max-height: 200px;">
+                        <img src="{{user.photoPath}}" class="img-rounded" alt="no image" style="max-width:100px; max-height: 200px;">
                     </div>
                     <div class="col-md-9">
                         <div class="row">
@@ -33,7 +33,7 @@
                                 <label class="control-label" for="focusedInput">ID</label>
                             </div>
                             <div class="col-md-9">
-                                <label class="control-label" id="labelId" for="focusedInput">{{userPrivate.id}}</label>
+                                <label class="control-label" id="labelId" for="focusedInput">{{user.id}}</label>
                             </div>
                         </div>
                         <div class="row">
@@ -41,7 +41,7 @@
                                 <label class="control-label" for="focusedInput">Emailaddress</label>
                             </div>
                             <div class="col-md-9">
-                                <label class="control-label" id="labelId" for="focusedInput">{{userPrivate.emailAddress}}</label>
+                                <label class="control-label" id="labelId" for="focusedInput">{{user.emailAddress}}</label>
                             </div>
                         </div>
                         <div class="row">
@@ -49,7 +49,7 @@
                                 <label class="control-label" for="focusedInput">Name</label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" #inputUserName value="{{userPrivate.name}}">
+                                <input type="text" class="form-control" #inputUserName value="{{user.name}}">
                             </div>
                         </div>
                         <div class="row">
@@ -57,7 +57,7 @@
                                 <label class="control-label" for="focusedInput">Bio</label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" #inputUserBio value="{{userPrivate.bio}}">
+                                <input type="text" class="form-control" #inputUserBio value="{{user.bio}}">
                             </div>
                         </div>
 
@@ -66,7 +66,7 @@
                                 <label class="control-label" for="focusedInput">Location</label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" #inputUserLocation value="{{userPrivate.location}}">
+                                <input type="text" class="form-control" #inputUserLocation value="{{user.location}}">
                             </div>
                         </div>
 
@@ -75,7 +75,7 @@
                                 <label class="control-label" for="focusedInput">Website</label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" #inputUserWebsite value="{{userPrivate.website}}">
+                                <input type="text" class="form-control" #inputUserWebsite value="{{user.website}}">
                             </div>
                         </div>
                         <div class="row">
@@ -83,7 +83,7 @@
                                 <label class="control-label" for="focusedInput">Userrole</label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" #inputUserRole value="{{userPrivate.userRole}}">
+                                <input type="text" class="form-control" #inputUserRole value="{{user.userRole}}">
                             </div>
                         </div>
                     </div>

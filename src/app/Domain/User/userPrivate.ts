@@ -7,7 +7,8 @@ export class UserPrivate {
         public location: string,
         public name: string,       
         public photopath: string,
-        public emailAddress: string        
+        public emailAddress: string,
+        public resources: string[]   
     ) {
 
     }    
